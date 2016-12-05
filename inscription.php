@@ -89,8 +89,8 @@
         </li>
         <li>
             <label for="sexe">Sexe :</label>
-            <input type="radio" name="sexe" id="sexe" value="male"/>Homme<br>
-            <input type="radio" name="sexe" id="sexe" value="femme"/>Femme
+            <input type="radio" name="sexe" id="sexe" value="H"/>Homme<br>
+            <input type="radio" name="sexe" id="sexe" value="F"/>Femme
             <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
         </li>
@@ -129,7 +129,6 @@
             <output id="rangeIt"></output>
             <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
-            <script
         </li>
         <li>
             <label for="couleur">Couleur Preféré :</label>
