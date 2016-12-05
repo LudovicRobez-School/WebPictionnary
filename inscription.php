@@ -33,7 +33,8 @@
         </li>
         <li>
             <label for="mdp1">Mot de passe :</label>
-            <input type="password" name="password" id="mdp1" pattern="regex" placeholder="de 6 à 8 caractères" pattern="\w{6,8}" onkeyup="validateMdp2()"  title = "Le mot de passe doit contenir de 6 à 8 caractères alphanumériques.">
+            <input type="password" name="password" id="mdp1" placeholder="password de 6 à 8 caractères" required
+                   pattern="\w{6,8}" onkeyup="validateMdp2()"  title = "Le mot de passe doit contenir de 6 à 8 caractères alphanumériques.">
             <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
             <!-- spécifiez l'expression régulière: le mot de passe doit être composé de 6 à 8 caractères alphanumériques -->
@@ -124,13 +125,15 @@
         </li>
         <li>
             <label for="taille">Taille :</label>
-            <input type="range" name="taille" id="taille" value="0" max="2.50" min="0" step="0.01"/>
+            <input type="range" name="taille" id="taille" value="0" max="2.50" min="0" step="0.01" onchange="document.querySelector('#rangeIt').innerHTML = document.querySelector('#taille').value + ' m';"/>
+            <output id="rangeIt"></output>
             <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <script
         </li>
         <li>
             <label for="couleur">Couleur Preféré :</label>
-            <input type="text" name="couleur" id="couleur"/>
+            <input type="color" name="couleur" id="couleur"/>
             <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
         </li>
