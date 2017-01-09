@@ -184,7 +184,6 @@
                             var MAX_HEIGHT = 96;
                             var width = img.width;
                             var height = img.height;
-
                             // A FAIRE: si on garde les deux lignes suivantes, on rétrécit l'image mais elle sera déformée
                             // Vous devez supprimer ces lignes, et modifier width et height pour:
                             //    - garder les proportions,
@@ -192,7 +191,6 @@
                             var max = width > height ? width : height;
                             width = width * MAX_WIDTH / max;
                             height = height * MAX_HEIGHT / max;
-
                             canvas.width = width;
                             canvas.height = height;
                             // on dessine l'image dans le canvas à la position 0,0 (en haut à gauche)
