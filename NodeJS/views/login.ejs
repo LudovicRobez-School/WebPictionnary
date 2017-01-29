@@ -1,20 +1,18 @@
 <% var title = 'Formulaire login' %>
 <% include head %>
-
-<h1>Login</h1>
-Accés au <a href="/profile">/profil</a>
-<form method="post" action="/login">
-  <p>
-    <label>Username:</label>
-    <input type="text" name="username">
-  </p>
-  <p>
-    <label>Password:</label>
-    <input type="text" name="password">
-  </p>
-  <p>
-    <input type="submit" value="Login">
-  </p>
+<form id="login" method="post" action="/login">
+    <h1>LogIn</h1>
+    Accés au <a href="/dashboard">profil</a>
+    <fieldset id="inputs">
+        <p><input id="username" type="text" placeholder="Username" name="username" autofocus required></p>
+        <input id="password" type="password" placeholder="Password" name="password" required>
+    </fieldset>
+    <fieldset id="actions">
+        <input type="submit" id="submit" value="Log in">
+		<a href="/auth/facebook">Connexion Facebook</a>
+        <a href="\register">S'inscrire</a>
+    </fieldset>
 </form>
-Accés au <a href="/register">/register</a>
+
+
 <% include foot %>

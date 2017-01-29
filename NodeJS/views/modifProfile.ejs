@@ -1,0 +1,113 @@
+﻿<% va<% var title = 'Page de modification' %>
+<% include head %>
+
+<form id="update" method="post" action="/modifProfile">
+    <h1>Modifier vos informations</h1>
+    <fieldset id="inputs">
+
+        <label for="mdp1">Mot de passe :</label>
+        <p><input type="password" name="password" id="mdp1" onkeyup="validateMdp2()" title = "Le mot de passe doit contenir de 6 à 8 caractères alphanumériques."
+               placeholder="password"
+               pattern="\w{6,8}"
+
+        />
+        <span class="form_hint">De 6 à 8 caractères alphanumériques.</span>
+            <label for="mdp2">Confirmez mot de passe :</label>
+        <p><input type="password" id="mdp2" onkeyup="validateMdp2()"
+                   placeholder="password"/>
+            <span class="form_hint">Les mots de passes doivent être égaux.</span>
+            <script>
+                validateMdp2 = function(e) {
+                    var mdp1 = document.getElementById('mdp1');
+                    var mdp2 = document.getElementById('mdp2');
+                    var re = /^[a-z0-9A-Z]{6,8}/;
+                    if (re.exec(mdp1.value) && mdp1.value==mdp2.value)  {
+                        // ici on supprime le message d'erreur personnalisé, et du coup mdp2 devient valide.
+                        document.getElementById('mdp2').setCustomValidity('');
+                    } else {
+                        // ici on ajoute un message d'erreur personnalisé, et du coup mdp2 devient invalide.
+                        document.getElementById('mdp2').setCustomValidity('Les mots de passes doivent être égaux.');
+                    }
+                }
+            </script>
+
+        <label for="ville">Ville :</label>
+        <p><input  name="ville" id="ville" type="text" />
+        <label for="website">Site Web :</label>
+        <p><input  name="website" id="website" type="url" />
+        <label for="color">Couleur :</label>
+        <p><input id="color" name="color"
+               type="color"
+               placeholder="#FFFFFF"
+               pattern="#[0-9A-Fa-f]{6}"
+               required />
+        <p><label for="profilepicfile">Photo de profil:</label>
+        <p><input type="file" id="profilepicfile" onchange="loadProfilePic(this)"/>
+        <span class="form_hint">Choisissez une image.</span>
+        <p><input type="hidden" name="profilepic" id="profilepic"/>
+        <canvas id="preview" width="0" height="0"></canvas></p>
+        <script>
+            loadProfilePic = function (e) {
+                // on récupère le canvas où on affichera l'image
+                var canvas = document.getElementById("preview");
+                var ctx = canvas.getContext("2d");
+                // on réinitialise le canvas: on l'efface, et déclare sa largeur et hauteur à 0
+                ctx.fillStyle = "white";
+                ctx.fillRect(0,0,canvas.width,canvas.height);
+                canvas.width=0;
+                canvas.height=0;
+                // on récupérer le fichier: le premier (et seul dans ce cas là) de la liste
+                var file = document.getElementById("profilepicfile").files[0];
+                // l'élément img va servir à stocker l'image temporairement
+                var img = document.createElement("img");
+                // l'objet de type FileReader nous permet de lire les données du fichier.
+                var reader = new FileReader();
+                // on prépare la fonction callback qui sera appelée lorsque l'image sera chargée
+                reader.onload = function(e) {
+                    //on vérifie qu'on a bien téléchargé une image, grâce au mime type
+                    if (!file.type.match(/image.*/)) {
+                        // le fichier choisi n'est pas une image: le champs profilepicfile est invalide, et on supprime sa valeur
+                        document.getElementById("profilepicfile").setCustomValidity("Il faut télécharger une image.");
+                        document.getElementById("profilepicfile").value = "";
+                    }
+                    else {
+                        // le callback sera appelé par la méthode getAsDataURL, donc le paramètre de callback e est une url qui contient
+                        // les données de l'image. On modifie donc la source de l'image pour qu'elle soit égale à cette url
+                        // on aurait fait différemment si on appelait une autre méthode que getAsDataURL.
+                        img.src = e.target.result;
+                        // le champs profilepicfile est valide
+                        document.getElementById("profilepicfile").setCustomValidity("");
+                        var MAX_WIDTH = 96;
+                        var MAX_HEIGHT = 96;
+                        var width = img.width;
+                        var height = img.height;
+                        // A FAIRE: si on garde les deux lignes suivantes, on rétrécit l'image mais elle sera déformée
+                        // Vous devez supprimer ces lignes, et modifier width et height pour:
+                        //    - garder les proportions,
+                        //    - et que le maximum de width et height soit égal à 96
+                        var max = width > height ? width : height;
+                        width = width * MAX_WIDTH / max;
+                        height = height * MAX_HEIGHT / max;
+                        canvas.width = width;
+                        canvas.height = height;
+                        // on dessine l'image dans le canvas à la position 0,0 (en haut à gauche)
+                        // et avec une largeur de width et une hauteur de height
+                        ctx.drawImage(img, 0, 0, width, height);
+                        // on exporte le contenu du canvas (l'image redimensionnée) sous la forme d'une data url
+                        var dataurl = canvas.toDataURL("image/png");
+                        // on donne finalement cette dataurl comme valeur au champs profilepic
+                        document.getElementById("profilepic").value = dataurl;
+                    };
+                }
+                // on charge l'image pour de vrai, lorsque ce sera terminé le callback loadProfilePic sera appelé.
+                reader.readAsDataURL(file);
+            }
+        </script>
+    </fieldset>
+    <fieldset id="actions">
+        <input type="submit" id="submit">
+        <input type="button" id="retour" onclick="window.location='/dashboard';" value="Retour profil"/>
+    </fieldset>
+</form>
+
+<% include foot %>

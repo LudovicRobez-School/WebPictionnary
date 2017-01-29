@@ -8,10 +8,9 @@
            "log4js": "^0.6.29",
            "morgan": "^1.6.1",
            "mysql": "^2.10.2",
-      "serve-favicon": "^2.3.0",
-      "express-sessions": "^1.0.6",
-      "express-mysql-session": "^1.2.0"
+           "serve-favicon": "^2.3.0",
+		   "express-session": "1.14.2"
     },
-    "author": "Mail ludovic.robez@etu.unice.fr",
-    "description": "Enregistrement et authentification"
+    "author": "Mail <ludovic.robez@etu.unice.fr>",
+    "description": "Pictionnary"
 }

@@ -1,28 +1,32 @@
-﻿<% var title = 'Formulaire inscription' %>
+﻿
+<% var title = 'Formulaire d\'inscription' %>
 <% include head %>
 
-<h1>Inscrivez-vous</h1>
-<form method="post" action="/register">
+<h2>Inscrivez-vous</h2>
+<form class="inscription" action="/register" method="post" name="inscription">
     <!-- c'est quoi les attributs action et method ? -->
     <!-- qu'y a-t-il d'autre comme possiblité que post pour l'attribut method ? -->
     <span class="required_notification">Les champs obligatoires sont indiqués par *</span>
     <ul>
-        </li>   
+        </li>
         <li>
             <label for="email">E-mail :</label>
-            <input type="email" name="email" id="email" required/>
-            <!-- ajouter à input l'attribut qui lui donne le focus automatiquement -->
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- quelle est la différence entre les attributs name et id ? -->
-            <!-- c'est lequel qui doit être égal à l'attribut for du label ? -->
+            <input type="email" name="email" id="email"
+            autofocus
+            required
+			placeholder="name@something.com"/>
+            <!-- quelle est la différence entre les attributs name et id ? name peut être utilisé en php alors que l'id est unique et pour javascript-->
+            <!-- c'est lequel qui doit être égal à l'attribut for du label ? id-->
             <span class="form_hint">Format attendu "name@something.com"</span>
         </li>
         <li>
             <label for="mdp1">Mot de passe :</label>
-            <input type="password" name="password" id="mdp1" placeholder="password de 6 à 8 caractères" required
-                   pattern="\w{6,8}" onkeyup="validateMdp2()"  title = "Le mot de passe doit contenir de 6 à 8 caractères alphanumériques.">
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <input type="password" name="password" id="mdp1" onkeyup="validateMdp2()" title = "Le mot de passe doit contenir de 6 à 8 caractères alphanumériques."
+                   required
+                   placeholder="password"
+                   pattern="\w{6,8}"
+
+            />
             <!-- spécifiez l'expression régulière: le mot de passe doit être composé de 6 à 8 caractères alphanumériques -->
             <!-- quels sont les deux scénarios où l'attribut title sera affiché ? -->
             <!-- encore une fois, quelle est la différence entre name et id pour un input ? -->
@@ -30,9 +34,8 @@
         </li>
         <li>
             <label for="mdp2">Confirmez mot de passe :</label>
-            <input type="password" id="mdp2" required onkeyup="validateMdp2()">
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <input type="password" id="mdp2" required onkeyup="validateMdp2()"
+                    placeholder="password"/>
             <!-- pourquoi est-ce qu'on a pas mis un attribut name ici ? -->
             <!-- quel scénario justifie qu'on ait ajouté l'écouter validateMdp2() à l'évènement onkeyup de l'input mdp1 ? -->
             <span class="form_hint">Les mots de passes doivent être égaux.</span>
@@ -40,7 +43,8 @@
                 validateMdp2 = function(e) {
                     var mdp1 = document.getElementById('mdp1');
                     var mdp2 = document.getElementById('mdp2');
-                    if (mdp1.validity.valid && mdp1.value == mdp2.value) {
+					var re = /^[a-z0-9A-Z]{6,8}/;
+                    if (re.exec(mdp1.value) && mdp1.value==mdp2.value)  {
                         // ici on supprime le message d'erreur personnalisé, et du coup mdp2 devient valide.
                         document.getElementById('mdp2').setCustomValidity('');
                     } else {
@@ -49,36 +53,36 @@
                     }
                 }
             </script>
+
+        <li>
+            <label for="prenom">Prénom :</label>
+            <input type="text" name="prenom" id="prenom"
+                required
+                placeholder="prenom"/>
+            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
+            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+        </li>
         <li>
             <label for="nom">Nom :</label>
-            <input type="text" name="nom" id="nom"/>
+            <input type="text" name="nom" id="nom"
+                   required
+                   placeholder="nom"/>
             <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
             <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
         </li>
         <li>
-            <label for="prenom">Prenom :</label>
-            <input type="text" name="prenom" id="prenom" required/>
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
-        </li>
-        <li>
-            <label for="tel">Tel. :</label>
-            <input type="tel" name="tel" id="tel"/>
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <label for="tel">Numéro de téléphone :</label>
+            <input
+                id="tel" name="tel" type="tel"/>
         </li>
         <li>
             <label for="website">Site Web :</label>
-            <input type="url" name="website" id="website"/>
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <input  name="website" id="website" type="url" />
         </li>
         <li>
-            <label for="sexe">Sexe :</label>
-            <input type="radio" name="sexe" id="sexe" value="H"/>Homme<br>
-            <input type="radio" name="sexe" id="sexe" value="F"/>Femme
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <label>Sexe : </label>
+            <input  name="sexe" id="homme" type="radio" />Homme
+            <input  name="sexe" id="femme" type="radio" />Femme
         </li>
         <li>
             <label for="birthdate">Date de naissance:</label>
@@ -87,11 +91,15 @@
                 computeAge = function(e) {
                     try{
                         // j'affiche dans la console quelques objets javascript, ce qui devrait vous aider.
-                        var age = new Date(Date.now()).getFullYear() - new Date(Date.parse(document.getElementById("birthdate").valueAsDate)).getFullYear();
-                        document.getElementById("age").value = age;
-                        // modifier ici la valeur de l'élément age
+                        console.log(Date.now());
+                        console.log(document.getElementById("birthdate"));
+                        console.log(document.getElementById("birthdate").valueAsDate);+
+                        console.log(Date.parse(document.getElementById("birthdate").valueAsDate));
+                        console.log(new Date(0).getFullYear());
+                        console.log(new Date(document.getElementById("birthdate").valueAsDate).getFullYear());
+                        var age = new Date(Date.now()).getFullYear() - new Date(document.getElementById("birthdate").valueAsDate).getFullYear();
+                        document.getElementById("age").value =age;
                     } catch(e) {
-                        // supprimez ici la valeur de l'élément age
                         document.getElementById("age").value = "";
                     }
                 }
@@ -105,22 +113,27 @@
         </li>
         <li>
             <label for="ville">Ville :</label>
-            <input type="text" name="ville" id="ville"/>
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <input  name="ville" id="ville" type="text" />
         </li>
         <li>
             <label for="taille">Taille :</label>
-            <input type="range" name="taille" id="taille" value="0" max="2.50" min="0" step="0.01" onchange="document.querySelector('#rangeIt').innerHTML = document.querySelector('#taille').value + ' m';"/>
-            <output id="rangeIt"></output>
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <input id="taille" name="taille"
+                   type="range"
+                   placeholder="0 to 300"
+                   pattern="[0-300]|1"
+                   min="0" max="300"
+                   step="1"
+                   onchange="document.querySelector('#rangeit').innerHTML = (document.querySelector('#taille').value) + 'cm';"
+            />
+            <output id="rangeit"></output>
         </li>
         <li>
-            <label for="couleur">Couleur Preféré :</label>
-            <input type="color" name="couleur" id="couleur"/>
-            <!-- ajouter à input l'attribut qui dit que c'est un champs obligatoire -->
-            <!-- ajouter à input l'attribut qui donne une indication grisée (placeholder) -->
+            <label for="color">Couleur :</label>
+            <input id="color" name="color"
+               type="color"
+               placeholder="#FFFFFF"
+               pattern="#[0-9A-Fa-f]{6}"
+               required />
         </li>
         <li>
             <label for="profilepicfile">Photo de profil:</label>
@@ -141,7 +154,7 @@
                     var canvas = document.getElementById("preview");
                     var ctx = canvas.getContext("2d");
                     // on réinitialise le canvas: on l'efface, et déclare sa largeur et hauteur à 0
-                    ctx.fillStyle ="white";
+                    ctx.fillStyle = "white";
                     ctx.fillRect(0,0,canvas.width,canvas.height);
                     canvas.width=0;
                     canvas.height=0;
@@ -196,7 +209,7 @@
         <li>
             <input type="submit" value="Soumettre Formulaire">
         </li>
+
     </ul>
 </form>
-
 <% include foot %>
