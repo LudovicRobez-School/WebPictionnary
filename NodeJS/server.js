@@ -15,13 +15,12 @@ app.use(morgan('combined')); // Active le middleware de logging
 app.use(express.static(__dirname + '/public')); // Indique que le dossier /public contient des fichiers statiques (middleware chargé de base)
 
 var sess = {
-    secret: 'keyboard cat'
+    secret: '1234567890QWERTY'
 };
 
 app.use(session(sess));
 
 logger.info('server start');
-app.listen(1313);
 
 // config
 app.set('view engine', 'ejs');
@@ -56,7 +55,6 @@ connection.connect();
 app.get('/deleteCompte',function(req, res){
     var req = "DELETE FROM USERS WHERE id = "+sess.id;
     connection.query(req, function (err, rows) {
-		connection.release();
 		if (err) 
 			throw err;
         else 
@@ -67,7 +65,6 @@ app.get('/deleteCompte',function(req, res){
             res.json({"code": 100, "status": "Erreur de connexion à la DB"});
             return;
         });
-    });
 });
 
 app.post('/login', function (req, res) {
@@ -75,7 +72,6 @@ app.post('/login', function (req, res) {
     var password = req.body.password;
 	var req = "SELECT * from users WHERE email='" + username + "' AND password = '" + password + "'";
     connection.query(req, function (err, rows, fields) {
-		connection.release();
         if (!err) {
             if (rows.length > 0){
 				sess.valid = true;
@@ -112,10 +108,8 @@ app.post('/register', function (req, res) {
 	var taille = req.body.taille;  
 	var couleur = req.body.couleur;  
 	var profilepic = req.body.profilepic;
-	
 	var req = "INSERT INTO users (email, password, nom, prenom, tel, website, sexe, birthdate, ville, taille, couleur, profilepic)VALUES('"+email+"','"+password+"','"+nom+"','"+prenom+"','"+telephone+"','"+siteweb+"','"+sexe+"','"+birthdate+"','"+ville+"',"+taille+",'"+couleur+"','"+profilepic+"')";
     connection.query(req, function (err, rows, fields) {
-        connection.release();
 		if (err) 
 			throw err;
 		else 
@@ -133,14 +127,13 @@ app.get('/dashboard', function (req, res) {
     if (sess.valid) {
         if (sess.admin) {
             res.redirect('adminDashboard')
-        }else {
+        } else {
 			req = "SELECT * from drawings WHERE email='" + sess.email + "' AND reponse IS NULL";
             connection.query(req, function (err, rows, fields) {
-				connection.release();
                 if (!err) {
                     res.render('dashboard', {
                             picture: sess.profileEpic,
-                            username: sess.prenom
+                            username: sess.prenom,
 							result:rows
                     });
                 }else{
@@ -158,8 +151,8 @@ app.get('/dashboard', function (req, res) {
 
 app.get('/adminDashboard', function (req, res) {
     if (sess.valid) {
+        connection.release();
 		connection.query("SELECT * from drawings", function (err, rows, fields) {
-			connection.release();
             if (!err) {
                 res.render('adminDashboard', {
 					picture: sess.profileEpic,
@@ -171,7 +164,6 @@ app.get('/adminDashboard', function (req, res) {
                     throw err;
                 }
             });
-        });
     }else
         res.redirect("/login");
 });
@@ -190,10 +182,8 @@ app.post('/paint', function (req, res, fields) {
     var userId = sess.id;
     var email = req.body.destinataire;
     var mot = req.body.mot;
-
     var req = "INSERT INTO drawings(commandes, images, u_id, email, mot) VALUES ('"+drawingCommands+"','"+ picture +"',"+ userId+",'"+email+"','"+mot+"')";
     connection.query(req, function (err, rows, fields) {
-        connection.release();
         if (err) 
 			throw err;
         else 
@@ -215,10 +205,8 @@ app.post('/modifProfile', function (req, res) {
 
     sess.profileEpic = profilepic;
     sess.couleur = couleur;
-
     var req = "UPDATE Users SET `password` ='"+password+"' ,`website` = '"+siteweb+"',`ville` ='"+ville+"',`couleur` = '"+couleur+"',`profilepic` = '"+profilepic+"' WHERE `id` = "+sess.id;
     connection.query(req, function (err, rows, fields) {
-        connection.release();
         if (err) 
 			throw err;
         else 
@@ -243,7 +231,6 @@ app.get('/reponse', function(req, res){
         sess.idImage = req.query.id;
 		req = "SELECT * from drawings where id="+sess.idImage;
         connection.query(req, function (err, rows, fields) {
-                connection.release();
                 if (!err) {
                     res.render('reponse', {
                         image: rows[0].images
@@ -253,16 +240,14 @@ app.get('/reponse', function(req, res){
                     throw err;
                 }
             });
-        });
     }else
         res.redirect("/login");
 });
 
 app.post('/reponse', function (req, res) {
     var reponse = req.body.reponse;
-    var req = "UPDATE drawings SET reponse='"+reponse+"' WHERE id = "+sess.idImage;
+    var req = "UPDATE drawings SET reponse='" + reponse + "' WHERE id = " + sess.idImage;
     connection.query(req, function (err, rows, fields) {
-		connection.release();
 		if (err) 
 			throw err;
 		else 
@@ -278,8 +263,7 @@ app.post('/reponse', function (req, res) {
 app.get('/facebook', passport.authenticate('facebook', {scope: ['email', 'public_profile', 'user_friends']}));
 
 app.get('/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/dashboard',
-                                      failureRedirect: '/login' }));
+  passport.authenticate('facebook', { successRedirect: '/dashboard',failureRedirect: '/login' }));
 
 app.listen(1313);
 

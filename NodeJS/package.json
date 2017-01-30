@@ -9,7 +9,9 @@
            "morgan": "^1.6.1",
            "mysql": "^2.10.2",
            "serve-favicon": "^2.3.0",
-		   "express-session": "1.14.2"
+		   "express-session": "^1.14.2",
+		   "passport": "^0.3.2",
+		   "passport-facebook": "^2.1.1"
     },
     "author": "Mail <ludovic.robez@etu.unice.fr>",
     "description": "Pictionnary"
